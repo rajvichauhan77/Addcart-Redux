@@ -16,9 +16,9 @@ const Navbar = () => {
                 <h1 className="text-2xl font-bold">ShopCart</h1>
                     <div>
 
-                <button onClick={()=> dispatch(showCart())} className='py-1 px-4 rounded-2xl border hover:bg-slate-50'>Cart: {cartLength} 👜</button>
+                <button onClick={()=> dispatch(showCart())} className='py-2 px-4 me-1 rounded-2xl border hover:bg-slate-50'>Cart: {cartLength}🛒 </button>
 
-                <button onClick={()=> dispatch(logout())} className='py-1 px-4 bg-red-600 rounded-2xl border hover:bg-red-700'>logout</button>
+                <button onClick={()=> dispatch(logout())} className='py-2 px-4 bg-yellow-600 rounded-2xl border hover:bg-yellow-900'>logout</button>
                     </div>
             </div>
         </div>
