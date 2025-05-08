@@ -6,7 +6,7 @@ import Login from './components/Login'
 import Products from './components/Products'
 import Navbar from './components/Navbar'
 import Cart from './components/Cart'
-import { showCart } from './features/cartSlice'
+import { replaceData, showCart } from './features/cartSlice'
 
 import Alert from './components/Alert'
 import { useEffect, useState } from 'react'
@@ -17,6 +17,7 @@ import { postDataApi } from './features/cartAction'
 
 
 function App() {
+
   let auth = useSelector(state=> state.auth.auth)
   let cart = useSelector(state=> state.cart.cartList)
   let cartData = useSelector(state => state.cart)
@@ -36,13 +37,25 @@ useEffect(() => {
     setFirst(false)
     return;
   }
-
- dispatch(postDataApi(cartData))
-
-
+  dispatch(postDataApi(cartData, auth.key))
 
 } ,[cartData])
 
+
+
+  useEffect(() => {
+
+    if(auth){
+     const fetchData = async () => {
+      const res = await fetch(`https://addcart-90bd6-default-rtdb.firebaseio.com/auth/${auth.key}/cart.json`)
+         
+      const data = await res.json();
+      dispatch(replaceData(data))
+  }
+  fetchData()
+    }
+   
+  },[dispatch])
 
 
 

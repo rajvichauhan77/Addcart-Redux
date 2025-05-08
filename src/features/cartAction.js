@@ -1,14 +1,19 @@
 import { showAlert } from "./alertSlice";
+import { useSelector } from "react-redux";
 
 
+export const postDataApi = (cartData, key) => {
 
-export const postDataApi = (cartData) => {
+    if(!key){
+        return;
+    }
+
     return async (dispatch) => {
         const fetchData = async () => {
-            const res = await fetch('https://cart-3f7f6-default-rtdb.firebaseio.com/cart.json',
+            const res = await fetch(`https://addcart-90bd6-default-rtdb.firebaseio.com/auth/${key}/cart.json`,
                 {
                     method: "PUT",
-                    body: JSON.stringify(cartData)
+                    body: JSON.stringify({cartData})
                 })
             const data = await res.json();
             return data;
