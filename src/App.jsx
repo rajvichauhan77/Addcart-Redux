@@ -7,7 +7,7 @@ import Products from './components/Products'
 import Navbar from './components/Navbar'
 import Cart from './components/Cart'
 import { replaceData, showCart } from './features/cartSlice'
-
+// import { showCart } from './features/cartSlice'
 import Alert from './components/Alert'
 import { useEffect, useState } from 'react'
 import { showAlert } from './features/alertSlice'

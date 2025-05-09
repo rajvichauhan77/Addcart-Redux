@@ -3,8 +3,15 @@ import { useDispatch } from 'react-redux'
 import { login } from '../features/authSlice'
 
 import { ToastContainer, toast } from 'react-toastify';
+import app from '../features/firebaseconfig';
+
+import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword,  updateProfile } from 'firebase/auth'
+
+
 
 const Login = () => {
+
+  const auth = getAuth(app)
 
   const [formdata, setFormData] = useState({name:"", img:"", email:"", password:""})
   const [logdata, setLogData] = useState({email:"", password:""})
@@ -29,45 +36,89 @@ const Login = () => {
     })
   }
 
-  async function handleReg() {
-    try {
-      const res = await fetch('https://addcart-90bd6-default-rtdb.firebaseio.com/auth.json', {
-        method: "POST",
-        body: JSON.stringify(formdata)
-      })
-      toast("Register Successesfull!!!")
 
-    } catch (error) {
-      console.log(error)
-      toast("Something went wrong... try again")
-    }
-    handleLog()
+
+  async function handleReg() {
+
+
+    // try {
+    //   const res = await fetch('https://addcart-90bd6-default-rtdb.firebaseio.com/auth.json', {
+    //     method: "POST",
+    //     body: JSON.stringify(formdata)
+    //   })
+    //   toast("Register Successesfull!!!")
+
+    // } catch (error) {
+    //   console.log(error)
+    //   toast("Something went wrong... try again")
+    // }
+    // handleLog()
+
+
+
+        try {
+        
+          const res = await createUserWithEmailAndPassword(auth, formdata.email, formdata.password)
+          const users = res.user
+
+          await updateProfile(users, {
+            displayName:formdata.name,
+            photoURL : formdata.img
+        })
+
+        let cUser = auth.currentUser
+        dispatch(login({name:cUser.displayName, email:cUser.email, img: cUser.photoURL}))
+
+        toast.success("Sign UP successfull...!")
+
+        } catch (error) {
+          console.log(error.code)
+          console.log(error.message)
+          toast.error(error.message)
+        }
+   
+    
+
   }
 
 
     async function handleLog() {
+      // try {
+      //   toast("Loading...")
+      //   const res = await fetch("https://addcart-90bd6-default-rtdb.firebaseio.com/auth.json")
+      //   const data = await res.json()
+
+      //   console.log(data)
+
+      //   console.log(Object.keys(data))
+
+      //   for(let key in data){
+      //     if(data[key].email == logdata.email && data[key].password == logdata.password)
+      //     {
+      //       toast("Login Successfull...!")
+      //       dispatch(login({...data[key], key:key}))
+      //       return
+      //     }
+      //   }
+
+      // } catch (error) {
+      //   console.log(err)
+      //   toast("something went wrong")
+      // }
+
+
       try {
-        toast("Loading...")
-        const res = await fetch("https://addcart-90bd6-default-rtdb.firebaseio.com/auth.json")
-        const data = await res.json()
+        const res = await signInWithEmailAndPassword(auth, formdata.email, formdata.password)
+        const users = res.user
 
-        console.log(data)
-
-        console.log(Object.keys(data))
-
-        for(let key in data){
-          if(data[key].email == logdata.email && data[key].password == logdata.password)
-          {
-            toast("Login Successfull...!")
-            dispatch(login({...data[key], key:key}))
-            return
-          }
-        }
-
+        console.log(auth.currentUser)
+        toast.success("signed up successfully...")
       } catch (error) {
-        console.log(err)
-        toast("something went wrong")
+        console.log(error.code)
+        console.log(error.message)
+        toast.error(error.message)
       }
+
     }
 
 
@@ -112,3 +163,7 @@ const Login = () => {
 }
 
 export default Login
+
+
+
+// https://cart-add-22eca-default-rtdb.firebaseio.com/
