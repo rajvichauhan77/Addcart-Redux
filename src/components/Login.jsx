@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { login } from '../features/authSlice'
-
 import { ToastContainer, toast } from 'react-toastify';
-import app from '../features/firebaseconfig';
 
+import { current } from '@reduxjs/toolkit';
 import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword,  updateProfile } from 'firebase/auth'
+
+import app from '../firebaseconfig';
 
 
 
@@ -54,11 +55,9 @@ const Login = () => {
     // }
     // handleLog()
 
-
-
         try {
         
-          const res = await createUserWithEmailAndPassword(auth, formdata.email, formdata.password)
+          const res = await createUserWithEmailAndPassword(auth, formdata.email.trim(), formdata.password.trim())
           const users = res.user
 
           await updateProfile(users, {
@@ -66,9 +65,11 @@ const Login = () => {
             photoURL : formdata.img
         })
 
-        let cUser = auth.currentUser
-        dispatch(login({name:cUser.displayName, email:cUser.email, img: cUser.photoURL}))
-
+        // let cUser = auth.currentUser
+        // console.log(cUser)
+      
+        handleLog()
+          console.log(users)
         toast.success("Sign UP successfull...!")
 
         } catch (error) {
@@ -108,11 +109,12 @@ const Login = () => {
 
 
       try {
-        const res = await signInWithEmailAndPassword(auth, formdata.email, formdata.password)
+        const res = await signInWithEmailAndPassword(auth, formdata.email.trim(), formdata.password.trim())
         const users = res.user
 
-        console.log(auth.currentUser)
+        let cUser = auth.currentUser
         toast.success("signed up successfully...")
+          dispatch(login({name:cUser.displayName, email:cUser.email, img: cUser.photoURL}))
       } catch (error) {
         console.log(error.code)
         console.log(error.message)
