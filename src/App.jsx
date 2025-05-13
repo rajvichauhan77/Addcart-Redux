@@ -37,7 +37,8 @@ useEffect(() => {
     setFirst(false)
     return;
   }
-  dispatch(postDataApi(cartData, auth.key))
+
+  dispatch(postDataApi(cartData, auth))
 
 } ,[cartData])
 

@@ -84,6 +84,7 @@ const Login = () => {
 
 
     async function handleLog() {
+      
       // try {
       //   toast("Loading...")
       //   const res = await fetch("https://addcart-90bd6-default-rtdb.firebaseio.com/auth.json")
