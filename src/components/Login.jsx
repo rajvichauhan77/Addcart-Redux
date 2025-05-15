@@ -7,9 +7,9 @@ import { current } from '@reduxjs/toolkit';
 import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword,  updateProfile , setPersistence, browserLocalPersistence, browserSessionPersistence, onAuthStateChanged} from 'firebase/auth'
 
 import app from '../firebaseconfig';
-import { GoogleAuthProvider, userLog, userReg } from 'firebase/auth';
+// import { GoogleAuthProvider, userLog, userReg } from 'firebase/auth';
 
-
+import { userLog, userReg, handleGoogle } from '../features/authAction';
 
 
 const Login = () => {
